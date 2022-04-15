@@ -1,6 +1,6 @@
 const grid = document.querySelector(".grid");
 const resultDisplay = document.querySelector(".results")
-let currentShooterIndex = 202;
+let currentShooterIndex = 197;
 let width = 15;
 let invadersId;
 let aliensRemoved = [];
