@@ -8,7 +8,6 @@ let direction = 1;
 let goingRight = true;
 let GameOver = false;
 let results = 0;
-let boomBool = false;
 
 for (let i = 0; i < 225; i++) {
     const square = document.createElement("div");
@@ -108,10 +107,12 @@ function moveInvaders() {
         GameOver = true;
     }
 
-    if (alienInvaders > squares.length) {
-        clearInterval(invadersId);
-        resultDisplay.innerHTML = "Game Over";
-        GameOver = true;
+    for (let aliens of alienInvaders) {
+        if (alienInvaders[aliens] > (squares.length)) {
+            alert("Cumplido");
+            resultsDisplay.innerHTML = 'GAME OVER';
+            clearInterval(invadersId);
+        }
     }
 
 
@@ -124,10 +125,14 @@ function moveInvaders() {
 invadersId = setInterval(moveInvaders, 300);
 
 
-function shoot(e) {
+/*function shoot(e) {
     let laserId;
     let currentLaserIndex = currentShooterIndex;
     function moveLaser() {
+        squares[currentLaserIndex].classList.remove('laser')
+        currentLaserIndex -= width
+        squares[currentLaserIndex].classList.add('laser')
+
         squares[currentLaserIndex].classList.remove("laser");
         currentLaserIndex -= width;
         squares[currentLaserIndex].classList.add("laser");
@@ -145,6 +150,32 @@ function shoot(e) {
             resultDisplay.innerHTML = results;
 
         }
+    }*/
+
+function shoot(e) {
+    let laserId
+    let currentLaserIndex = currentShooterIndex
+    function moveLaser() {
+        squares[currentLaserIndex].classList.remove('laser')
+        currentLaserIndex -= width
+        squares[currentLaserIndex].classList.add('laser')
+
+        if (squares[currentLaserIndex].classList.contains('invader')) {
+            squares[currentLaserIndex].classList.remove('laser')
+            squares[currentLaserIndex].classList.remove('invader')
+            squares[currentLaserIndex].classList.add('boom')
+
+            setTimeout(() => squares[currentLaserIndex].classList.remove('boom'), 300)
+            clearInterval(laserId)
+
+            const alienRemoved = alienInvaders.indexOf(currentLaserIndex)
+            aliensRemoved.push(alienRemoved)
+            results++
+            resultsDisplay.innerHTML = results
+            console.log(aliensRemoved)
+
+        }
+
     }
     if (!GameOver) {
         switch (e.key) {
